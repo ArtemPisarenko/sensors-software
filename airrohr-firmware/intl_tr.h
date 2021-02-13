@@ -35,6 +35,7 @@ const char INTL_DNMS[] PROGMEM = "DNMS ({l_a})";
 const char INTL_DNMS_CORRECTION[] PROGMEM = "dB (A) 'da düzeltme";
 const char INTL_TEMP_CORRECTION[] PROGMEM = "°C olarak düzeltme";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
+const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "yetkilendirme";
 #define INTL_REPORT_ISSUE "Sorun bildirin"
 
@@ -108,6 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Rakım";
 const char INTL_TIME_UTC[] PROGMEM = "zaman (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "sinyal gücü";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "sinyal kalitesi";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
 #define INTL_NUMBER_OF_MEASUREMENTS "Ölçümlerin sayısı"
 #define INTL_TIME_SENDING_MS "Göndermede harcanan süre"
 #define INTL_SENSOR "algılayıcı(Sensör)"

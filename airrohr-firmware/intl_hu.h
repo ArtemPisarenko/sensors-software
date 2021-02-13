@@ -35,6 +35,7 @@ const char INTL_DNMS[] PROGMEM = "DNMS ({l_a})";
 const char INTL_DNMS_CORRECTION[] PROGMEM ="korrekció dB(A)-ben";
 const char INTL_TEMP_CORRECTION[] PROGMEM = "Korrekció °C";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
+const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "Azonosítás";
 #define INTL_REPORT_ISSUE "Jelents egy hibát"
 
@@ -108,6 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Tengerszint feletti magasság";
 const char INTL_TIME_UTC[] PROGMEM = "Idő";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "Jelerősség";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "Jelminőség";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
 #define INTL_NUMBER_OF_MEASUREMENTS "Mérések száma:"
 #define INTL_TIME_SENDING_MS "Feltöltéssel töltött idő:"
 #define INTL_SENSOR "Szenzor"

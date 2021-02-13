@@ -35,6 +35,7 @@ const char INTL_DNMS[] PROGMEM = "DNMS ({l_a})";
 const char INTL_DNMS_CORRECTION[] PROGMEM = "Poprawka w dB(A)";
 const char INTL_TEMP_CORRECTION[] PROGMEM = "Poprawka w °C";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
+const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "Autoryzacja";
 #define INTL_REPORT_ISSUE "Zgłoś problem"
 
@@ -108,6 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Wysokość";
 const char INTL_TIME_UTC[] PROGMEM = "Czas (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "Siła sygnału";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "Jakość sygnału";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
 #define INTL_NUMBER_OF_MEASUREMENTS "Liczba pomiarów"
 #define INTL_TIME_SENDING_MS "Czas spędzony na wysyłce"
 #define INTL_SENSOR "Czujnik"

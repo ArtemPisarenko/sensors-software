@@ -49,6 +49,7 @@ enum ConfigShapeId {
 	Config_dnms_correction,
 	Config_temp_correction,
 	Config_gps_read,
+	Config_radsens_read,
 	Config_send2dusti,
 	Config_ssl_dusti,
 	Config_send2madavi,
@@ -112,6 +113,7 @@ static constexpr char CFG_KEY_DNMS_READ[] PROGMEM = "dnms_read";
 static constexpr char CFG_KEY_DNMS_CORRECTION[] PROGMEM = "dnms_correction";
 static constexpr char CFG_KEY_TEMP_CORRECTION[] PROGMEM = "temp_correction";
 static constexpr char CFG_KEY_GPS_READ[] PROGMEM = "gps_read";
+static constexpr char CFG_KEY_RADSENS_READ[] PROGMEM = "radsens_read";
 static constexpr char CFG_KEY_SEND2DUSTI[] PROGMEM = "send2dusti";
 static constexpr char CFG_KEY_SSL_DUSTI[] PROGMEM = "ssl_dusti";
 static constexpr char CFG_KEY_SEND2MADAVI[] PROGMEM = "send2madavi";
@@ -175,6 +177,7 @@ static constexpr ConfigShapeEntry configShape[] PROGMEM = {
 	{ Config_Type_String, sizeof(cfg::dnms_correction)-1, CFG_KEY_DNMS_CORRECTION, cfg::dnms_correction },
 	{ Config_Type_String, sizeof(cfg::temp_correction)-1, CFG_KEY_TEMP_CORRECTION, cfg::temp_correction },
 	{ Config_Type_Bool, 0, CFG_KEY_GPS_READ, &cfg::gps_read },
+	{ Config_Type_Bool, 0, CFG_KEY_RADSENS_READ, &cfg::radsens_read },
 	{ Config_Type_Bool, 0, CFG_KEY_SEND2DUSTI, &cfg::send2dusti },
 	{ Config_Type_Bool, 0, CFG_KEY_SSL_DUSTI, &cfg::ssl_dusti },
 	{ Config_Type_Bool, 0, CFG_KEY_SEND2MADAVI, &cfg::send2madavi },

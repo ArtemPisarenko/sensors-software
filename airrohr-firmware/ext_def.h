@@ -282,6 +282,9 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = "feinstaub";
 // MHZ19 CO2 sensor
 #define MHZ19_READ 0
 
+// ClimateGuard RadSens, radiation intensity
+#define RADSENS_READ 0
+
 // automatic firmware updates
 #define AUTO_UPDATE 1
 

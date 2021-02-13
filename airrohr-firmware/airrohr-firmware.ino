@@ -114,6 +114,7 @@ String SOFTWARE_VERSION(SOFTWARE_VERSION_STR);
 #include "./bmx280_i2c.h"
 #include "./sps30_i2c.h"
 #include "./dnms_i2c.h"
+#include "./radsens.h"
 
 #include "./intl.h"
 
@@ -170,6 +171,7 @@ namespace cfg {
 	char dnms_correction[LEN_DNMS_CORRECTION] = DNMS_CORRECTION;
 	bool gps_read = GPS_READ;
 	char temp_correction[LEN_TEMP_CORRECTION] = TEMP_CORRECTION;
+	bool radsens_read = RADSENS_READ;
 
 	// send to "APIs"
 	bool send2dusti = SEND2SENSORCOMMUNITY;
@@ -246,6 +248,7 @@ bool bmx280_init_failed = false;
 bool sht3x_init_failed = false;
 bool dnms_init_failed = false;
 bool gps_init_failed = false;
+bool radsens_init_failed = false;
 bool airrohr_selftest_failed = false;
 
 #if defined(ESP8266)
@@ -321,6 +324,11 @@ DallasTemperature ds18b20(&oneWire);
 TinyGPSPlus gps;
 
 /*****************************************************************
+ * ClimateGuard RadSens declaration                              *
+ *****************************************************************/
+RadSens radsens;
+
+/*****************************************************************
  * Variable Definitions for PPD24NS                              *
  * P1 for PM10 & P2 for PM25                                     *
  *****************************************************************/
@@ -372,6 +380,7 @@ float last_value_HTU21D_T = -128.0;
 float last_value_HTU21D_H = -1.0;
 float last_value_SHT3X_T = -128.0;
 float last_value_SHT3X_H = -1.0;
+float last_value_RADSENS_SR = -1.0;
 
 uint32_t sds_pm10_sum = 0;
 uint32_t sds_pm25_sum = 0;
@@ -1145,10 +1154,15 @@ static void webserver_config_send_body_get(String& page_content) {
 	page_content += FPSTR(INTL_MORE_SENSORS);
 	page_content += FPSTR(WEB_B_BR);
 
+	// Paginate page after ~ 1500 Bytes
+	server.sendContent(page_content);
+	page_content = emptyString;
+
 	add_form_checkbox_sensor(Config_ds18b20_read, FPSTR(INTL_DS18B20));
 	add_form_checkbox_sensor(Config_pms_read, FPSTR(INTL_PMS));
 	add_form_checkbox_sensor(Config_bmp_read, FPSTR(INTL_BMP180));
 	add_form_checkbox(Config_gps_read, FPSTR(INTL_NEO6M));
+	add_form_checkbox(Config_radsens_read, FPSTR(INTL_RADSENS));
 
 	// Paginate page after ~ 1500 Bytes
 	server.sendContent(page_content);
@@ -1516,6 +1530,10 @@ static void webserver_values() {
 		add_table_value(FPSTR(WEB_GPS), FPSTR(INTL_LONGITUDE), check_display_value(last_value_GPS_lon, -200.0, 6, 0), unit_Deg);
 		add_table_value(FPSTR(WEB_GPS), FPSTR(INTL_ALTITUDE), check_display_value(last_value_GPS_alt, -1000.0, 2, 0), "m");
 		add_table_value(FPSTR(WEB_GPS), FPSTR(INTL_TIME_UTC), last_value_GPS_timestamp, emptyString);
+		page_content += FPSTR(EMPTY_ROW);
+	}
+	if (cfg::radsens_read) {
+		add_table_value(FPSTR(SENSORS_RADSENS), FPSTR(INTL_RADIATION_STATIC), check_display_value(last_value_RADSENS_SR, -1, 1, 0), "µR/h");
 		page_content += FPSTR(EMPTY_ROW);
 	}
 
@@ -3342,6 +3360,24 @@ static __noinline void fetchSensorGPS(String& s) {
 }
 
 /*****************************************************************
+ * read ClimateGuard RadSens sensor values                       *
+ *****************************************************************/
+static void fetchSensorRadSens(String& s) {
+	debug_outln_verbose(FPSTR(DBG_TXT_START_READING), FPSTR(SENSORS_RADSENS));
+
+	if (radsens.readData()) {
+		last_value_RADSENS_SR = radsens.getRadiationStatic();
+		add_Value2Json(s, F("RadSens_radiation_static"), FPSTR(DBG_TXT_RADIATION), last_value_RADSENS_SR);
+	} else {
+		last_value_RADSENS_SR = -1.0;
+		debug_outln_error(F("RadSens read failed"));
+	}
+
+	debug_outln_info(FPSTR(DBG_TXT_SEP));
+	debug_outln_verbose(FPSTR(DBG_TXT_END_READING), FPSTR(SENSORS_RADSENS));
+}
+
+/*****************************************************************
  * OTAUpdate                                                     *
  *****************************************************************/
 
@@ -3946,6 +3982,21 @@ static void initDNMS() {
 	}
 }
 
+/*****************************************************************
+ * Init ClimateGuard RadSens                                     *
+ *****************************************************************/
+static bool initRadSens() {
+	debug_out(F("Trying RadSens sensor on default address "), DEBUG_MIN_INFO);
+
+	if (radsens.init()) {
+		debug_outln_info(FPSTR(DBG_TXT_FOUND));
+		return true;
+	} else {
+		debug_outln_info(FPSTR(DBG_TXT_NOT_FOUND));
+		return false;
+	}
+}
+
 static void powerOnTestSensors() {
 	if (cfg::ppd_read) {
 		pinMode(PPD_PIN_PM1, INPUT_PULLUP);					// Listen at the designated PIN
@@ -4091,6 +4142,13 @@ static void powerOnTestSensors() {
 		initDNMS();
 	}
 
+	if (cfg::radsens_read) {
+		debug_outln_info(F("Read RadSens..."));
+		if (!initRadSens()) {
+			debug_outln_error(F("Check RadSens wiring"));
+			radsens_init_failed = true;
+		}
+	}
 }
 
 static void logEnabledAPIs() {
@@ -4160,26 +4218,35 @@ static void setupNetworkTime() {
 	configTime(0, 0, ntpServer1, ntpServer2);
 }
 
-static unsigned long sendDataToOptionalApis(const String &data) {
+static void formatDataJsonObjectFrom(String &object, const String &body) {
+	object = FPSTR(data_first_part);
+	object += body;
+	if ((unsigned)(object.lastIndexOf(',') + 1) == object.length()) {
+		object.remove(object.length() - 1);
+	}
+	object += "]}";
+}
+
+static unsigned long sendDataToOptionalApis(const String &data, bool extended) {
 	unsigned long sum_send_time = 0;
 
-	if (cfg::send2madavi) {
+	if (!extended && cfg::send2madavi) {
 		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("madavi.de: "));
 		sum_send_time += sendData(LoggerMadavi, data, 0, HOST_MADAVI, URL_MADAVI);
 	}
 
-	if (cfg::send2sensemap && (cfg::senseboxid[0] != '\0')) {
+	if (!extended && cfg::send2sensemap && (cfg::senseboxid[0] != '\0')) {
 		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("opensensemap: "));
 		String sensemap_path(tmpl(FPSTR(URL_SENSEMAP), cfg::senseboxid));
 		sum_send_time += sendData(LoggerSensemap, data, 0, HOST_SENSEMAP, sensemap_path.c_str());
 	}
 
-	if (cfg::send2fsapp) {
+	if (!extended && cfg::send2fsapp) {
 		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("Server FS App: "));
 		sum_send_time += sendData(LoggerFSapp, data, 0, HOST_FSAPP, URL_FSAPP);
 	}
 
-	if (cfg::send2aircms) {
+	if (!extended && cfg::send2aircms) {
 		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("aircms.online: "));
 		unsigned long ts = millis() / 1000;
 		String token = WiFi.macAddress();
@@ -4195,14 +4262,14 @@ static unsigned long sendDataToOptionalApis(const String &data) {
 		sum_send_time += sendData(Loggeraircms, aircms_data, 0, HOST_AIRCMS, aircms_url.c_str());
 	}
 
-	if (cfg::send2influx) {
+	if (extended && cfg::send2influx) {
 		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("custom influx db: "));
 		RESERVE_STRING(data_4_influxdb, LARGE_STR);
 		create_influxdb_string_from_data(data_4_influxdb, data);
 		sum_send_time += sendData(LoggerInflux, data_4_influxdb, 0, cfg::host_influx, cfg::url_influx);
 	}
 
-	if (cfg::send2custom) {
+	if (extended && cfg::send2custom) {
 		String data_to_send = data;
 		data_to_send.remove(0, 1);
 		String data_4_custom(F("{\"esp8266id\": \""));
@@ -4213,7 +4280,7 @@ static unsigned long sendDataToOptionalApis(const String &data) {
 		sum_send_time += sendData(LoggerCustom, data_4_custom, 0, cfg::host_custom, cfg::url_custom);
 	}
 
-	if (cfg::send2csv) {
+	if (extended && cfg::send2csv) {
 		debug_outln_info(F("## Sending as csv: "));
 		send_csv(data);
 	}
@@ -4417,7 +4484,7 @@ void loop(void) {
 	if (send_now) {
 		last_signal_strength = WiFi.RSSI();
 		RESERVE_STRING(data, LARGE_STR);
-		data = FPSTR(data_first_part);
+		RESERVE_STRING(data_object, LARGE_STR);
 		RESERVE_STRING(result, MED_STR);
 
 		if (cfg::ppd_read) {
@@ -4506,14 +4573,20 @@ void loop(void) {
 		add_Value2Json(data, F("interval"), String(cfg::sending_intervall_ms));
 		add_Value2Json(data, F("signal"), String(last_signal_strength));
 
-		if ((unsigned)(data.lastIndexOf(',') + 1) == data.length()) {
-			data.remove(data.length() - 1);
-		}
-		data += "]}";
-
 		yield();
 
-		sum_send_time += sendDataToOptionalApis(data);
+		formatDataJsonObjectFrom(data_object, data);
+		sum_send_time += sendDataToOptionalApis(data_object, false);
+
+		if (cfg::radsens_read && (! radsens_init_failed)) {
+			// getting radiation (optional)
+			fetchSensorRadSens(result);
+			data += result;
+			result = emptyString;
+		}
+
+		formatDataJsonObjectFrom(data_object, data);
+		sum_send_time += sendDataToOptionalApis(data_object, true);
 
 		// https://en.wikipedia.org/wiki/Moving_average#Cumulative_moving_average
 		sending_time = (3 * sending_time + sum_send_time) / 4;
@@ -4541,7 +4614,7 @@ void loop(void) {
 		}
 
 		// Resetting for next sampling
-		last_data_string = std::move(data);
+		last_data_string = std::move(data_object);
 		lowpulseoccupancyP1 = 0;
 		lowpulseoccupancyP2 = 0;
 		sample_count = 0;

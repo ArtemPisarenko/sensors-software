@@ -8,6 +8,7 @@ const char TXT_CONTENT_TYPE_IMAGE_PNG[] PROGMEM = "image/png";
 const char DBG_TXT_TEMPERATURE[] PROGMEM = "Temperature (°C): ";
 const char DBG_TXT_HUMIDITY[] PROGMEM = "Humidity (%): ";
 const char DBG_TXT_PRESSURE[] PROGMEM = "Pressure (hPa): ";
+const char DBG_TXT_RADIATION[] PROGMEM = "Radiation (µR/h): ";
 const char DBG_TXT_START_READING[] PROGMEM = "R/ ";
 const char DBG_TXT_END_READING[] PROGMEM = "/R ";
 const char DBG_TXT_CHECKSUM_IS[] PROGMEM = "Checksum is: ";
@@ -37,6 +38,7 @@ const char SENSORS_BMP180[] PROGMEM = "BMP180";
 const char SENSORS_BME280[] PROGMEM = "BME280";
 const char SENSORS_BMP280[] PROGMEM = "BMP280";
 const char SENSORS_DNMS[] PROGMEM = "DNMS";
+const char SENSORS_RADSENS[] PROGMEM = "RadSens";
 
 const char WEB_PAGE_HEADER[] PROGMEM = "<!DOCTYPE html><html lang='" INTL_LANG "'>\
 <head>\

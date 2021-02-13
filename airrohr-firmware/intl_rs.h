@@ -35,6 +35,7 @@ const char INTL_DNMS[] PROGMEM = "DNMS ({l_a})";
 const char INTL_DNMS_CORRECTION[] PROGMEM = "Korekcija u dB(A)";
 const char INTL_TEMP_CORRECTION[] PROGMEM = "Korekcija u °C";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
+const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "Autorizacija";
 #define INTL_REPORT_ISSUE "Prijavite problem"
 
@@ -108,6 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Nadmorska visina";
 const char INTL_TIME_UTC[] PROGMEM = "Vreme (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "jačina signala";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "kvalitet signala";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
 #define INTL_NUMBER_OF_MEASUREMENTS "Broj merenja"
 #define INTL_TIME_SENDING_MS "Vreme utrošeno za slanje"
 #define INTL_SENSOR "Senzor"

@@ -135,6 +135,12 @@ Pinout:
 * Pin 4 (SEL)    -> Pin GND
 * Pin 5 (GND)    -> Pin GND
 
+### ClimateGuard RadSens (I2C)
+* VCC  ->  Pin 3V3
+* GND  ->  Pin GND
+* SCL  ->  Pin D4 (GPIO2)
+* SDA  ->  Pin D3 (GPIO0)
+
 ### LCD1602 (I2C, 5V - check your version)
 * VCC  ->  Pin VU
 * GND  ->  Pin GND
