@@ -20,9 +20,9 @@ def after_build(source, target, env):
     lang = config.get(sectionName, "lang")
     target_name = lang.lower()
 
-    with open(f"builds/latest_{target_name}.bin.md5", "w") as md5:
+    with open(f"builds/latest_{target_name}_airomsk.bin.md5", "w") as md5:
         print(_file_md5_hexdigest(target[0].path), file = md5)
-    shutil.copy(target[0].path, f"builds/latest_{target_name}.bin")
+    shutil.copy(target[0].path, f"builds/latest_{target_name}_airomsk.bin")
 
 
 env.AddPostAction("$BUILD_DIR/firmware.bin", after_build)

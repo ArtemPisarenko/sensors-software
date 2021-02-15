@@ -60,7 +60,7 @@
 #include <pgmspace.h>
 
 // increment on change
-#define SOFTWARE_VERSION_STR "NRZ-2020-133"
+#define SOFTWARE_VERSION_STR "NRZ-2020-133-airomsk"
 String SOFTWARE_VERSION(SOFTWARE_VERSION_STR);
 
 /*****************************************************************
@@ -3434,7 +3434,7 @@ static void twoStageOTAUpdate() {
 		fetch_name = F(OTA_BASENAME "/beta/latest_");
 	}
 	fetch_name += lang_variant;
-	fetch_name += F(".bin");
+	fetch_name += F("_airomsk.bin");
 
 	WiFiClientSecure client;
 	BearSSL::Session clientSession;

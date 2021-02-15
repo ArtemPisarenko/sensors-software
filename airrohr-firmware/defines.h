@@ -1,10 +1,10 @@
 #if defined(ESP8266)
 #define SENSOR_BASENAME "esp8266-"
-#define OTA_BASENAME "/airrohr"
+#define OTA_BASENAME "/firmware/airrohr"
 #endif
 #if defined(ESP32)
 #define SENSOR_BASENAME "esp32-"
-#define OTA_BASENAME "/airrohr/esp32"
+#define OTA_BASENAME "/firmware/airrohr/esp32"
 #endif
 
 #define SSID_BASENAME "airRohr-"

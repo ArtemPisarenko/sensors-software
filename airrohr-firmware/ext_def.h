@@ -76,7 +76,7 @@ static const char URL_AIRCMS[] PROGMEM = "/php/sensors.php?h=";
 // So we can not use SSL
 #define PORT_AIRCMS 80
 
-static const char FW_DOWNLOAD_HOST[] PROGMEM = "firmware.sensor.community";
+static const char FW_DOWNLOAD_HOST[] PROGMEM = "air.omsk.vip";
 #define FW_DOWNLOAD_PORT 443
 
 static const char FW_2ND_LOADER_URL[] PROGMEM = OTA_BASENAME "/loader-002.bin";
