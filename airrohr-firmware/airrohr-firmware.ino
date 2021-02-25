@@ -4278,7 +4278,7 @@ static unsigned long sendDataToOptionalApis(const String &data, bool extended) {
 		sum_send_time += sendData(LoggerFSapp, data, 0, HOST_FSAPP, URL_FSAPP);
 	}
 
-	if (!extended && cfg::send2aircms) {
+	if (extended && cfg::send2aircms) {
 		debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("aircms.online: "));
 		unsigned long ts = millis() / 1000;
 		String token = WiFi.macAddress();
