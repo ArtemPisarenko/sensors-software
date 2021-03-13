@@ -182,6 +182,7 @@ namespace cfg {
 	bool send2custom = SEND2CUSTOM;
 	bool send2influx = SEND2INFLUX;
 	bool send2csv = SEND2CSV;
+	bool send2radiation = SEND2RADIATION;
 
 	bool auto_update = AUTO_UPDATE;
 	bool use_beta = USE_BETA;
@@ -218,6 +219,9 @@ namespace cfg {
 	char user_custom[LEN_USER_CUSTOM] = USER_CUSTOM;
 	char pwd_custom[LEN_CFG_PASSWORD] = PWD_CUSTOM;
 
+	char host_radiation[LEN_HOST_RADIATION];
+	char url_radiation[LEN_URL_RADIATION];
+
 	void initNonTrivials(const char* id) {
 		strcpy(cfg::current_lang, CURRENT_LANG);
 		strcpy_P(www_username, WWW_USERNAME);
@@ -229,6 +233,8 @@ namespace cfg {
 		strcpy_P(host_influx, HOST_INFLUX);
 		strcpy_P(url_influx, URL_INFLUX);
 		strcpy_P(measurement_name_influx, MEASUREMENT_NAME_INFLUX);
+		strcpy_P(host_radiation, HOST_RADIATION);
+		strcpy_P(url_radiation, URL_RADIATION);
 
 		if (!*fs_ssid) {
 			strcpy(fs_ssid, SSID_BASENAME);
@@ -695,6 +701,10 @@ static void readConfig(bool oldconfig = false) {
 			cfg::bmx280_read = true;
 			rewriteConfig = true;
 		}
+		if (cfg::send2radiation && !cfg::radsens_read) {
+			cfg::send2radiation = false;
+			rewriteConfig = true;
+		}
 	} else {
 		debug_outln_error(F("failed to load json config"));
 
@@ -810,6 +820,7 @@ static void createLoggerConfigs() {
 	if (cfg::send2custom && (cfg::ssl_custom || (cfg::port_custom == 443))) {
 		loggerConfigs[LoggerCustom].session = new_session();
 	}
+	loggerConfigs[LoggerRadiation].destport = 80;
 }
 
 /*****************************************************************
@@ -1218,6 +1229,15 @@ static void webserver_config_send_body_get(String& page_content) {
 	add_form_input(page_content, Config_pwd_influx, FPSTR(INTL_PASSWORD), LEN_CFG_PASSWORD-1);
 	add_form_input(page_content, Config_measurement_name_influx, FPSTR(INTL_MEASUREMENT), LEN_MEASUREMENT_NAME_INFLUX-1);
 	page_content += FPSTR(TABLE_TAG_CLOSE_BR);
+	page_content += FPSTR(BR_TAG);
+
+	server.sendContent(page_content);
+	page_content = form_checkbox(Config_send2radiation, tmpl(FPSTR(INTL_SEND_TO), F("radiation API")), false);
+	page_content += FPSTR(TABLE_TAG_OPEN);
+	add_form_input(page_content, Config_host_radiation, FPSTR(INTL_SERVER), LEN_HOST_RADIATION-1);
+	add_form_input(page_content, Config_url_radiation, FPSTR(INTL_PATH), LEN_URL_RADIATION-1);
+	page_content += FPSTR(TABLE_TAG_CLOSE_BR);
+
 	page_content += F("</div></div>");
 	page_content += form_submit(FPSTR(INTL_SAVE_AND_RESTART));
 	page_content += FPSTR(BR_TAG);
@@ -2185,6 +2205,9 @@ static unsigned long sendData(const LoggerEntry logger, const String& data, cons
 	case LoggerInflux:
 		contentType = FPSTR(TXT_CONTENT_TYPE_INFLUXDB);
 		break;
+	case LoggerRadiation:
+		contentType = nullptr;
+		break;
 	default:
 		contentType = FPSTR(TXT_CONTENT_TYPE_JSON);
 		break;
@@ -2204,14 +2227,18 @@ static unsigned long sendData(const LoggerEntry logger, const String& data, cons
 		http.setAuthorization(cfg::user_influx, cfg::pwd_influx);
 	}
 	if (http.begin(*client, s_Host, loggerConfigs[logger].destport, s_url, !!loggerConfigs[logger].session)) {
-		http.addHeader(F("Content-Type"), contentType);
+		if (logger != LoggerRadiation)
+			http.addHeader(F("Content-Type"), contentType);
 		http.addHeader(F("X-Sensor"), String(F(SENSOR_BASENAME)) + esp_chipid);
 		http.addHeader(F("X-MAC-ID"), String(F(SENSOR_BASENAME)) + esp_mac_id);
 		if (pin) {
 			http.addHeader(F("X-PIN"), String(pin));
 		}
 
-		result = http.POST(data);
+		if (logger != LoggerRadiation)
+			result = http.POST(data);
+		else
+			result = http.GET();
 
 		if (result >= HTTP_CODE_OK && result <= HTTP_CODE_ALREADY_REPORTED) {
 			debug_outln_info(F("Succeeded - "), s_Host);
@@ -4180,6 +4207,11 @@ static void logEnabledAPIs() {
 	if (cfg::send2influx) {
 		debug_outln_info(F("custom influx DB"));
 	}
+
+	if (cfg::send2radiation) {
+		debug_outln_info(F("custom radiation API"));
+	}
+
 	debug_outln_info(FPSTR(DBG_TXT_SEP));
 	if (cfg::auto_update) {
 		debug_outln_info(F("Auto-Update active..."));
@@ -4583,6 +4615,13 @@ void loop(void) {
 			fetchSensorRadSens(result);
 			data += result;
 			result = emptyString;
+			if (cfg::send2radiation && (last_value_RADSENS_SR != -1.0f)) {
+				debug_outln_info(FPSTR(DBG_TXT_SENDING_TO), F("radiation API: "));
+				String data_url(cfg::url_radiation);
+				data_url.replace(F("{value}"), String(last_value_RADSENS_SR, 2));
+				data_url.replace(F("{macid}"), esp_mac_id);
+				sum_send_time += sendData(LoggerRadiation, String(), 0, cfg::host_radiation, data_url.c_str());
+			}
 		}
 
 		formatDataJsonObjectFrom(data_object, data);

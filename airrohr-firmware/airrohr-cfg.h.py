@@ -64,6 +64,9 @@ String		user_influx
 Password		pwd_influx
 String		measurement_name_influx
 Bool		ssl_influx
+Bool		send2radiation
+String		host_radiation
+String		url_radiation
 """
 
 with open("airrohr-cfg.h", "w") as h:

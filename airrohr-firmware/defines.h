@@ -34,6 +34,9 @@
 #define LEN_USER_CUSTOM 65
 #define MAX_PORT_DIGITS 5
 
+#define LEN_HOST_RADIATION 100
+#define LEN_URL_RADIATION 100
+
 // define debug levels
 #define DEBUG_ERROR 1
 #define DEBUG_WARNING 2

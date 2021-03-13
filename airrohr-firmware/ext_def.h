@@ -28,6 +28,7 @@ const char WWW_PASSWORD[] PROGMEM = "";
 #define SEND2LORA 0
 #define SEND2CSV 0
 #define SEND2CUSTOM 0
+#define SEND2RADIATION 0
 
 // OpenSenseMap
 #define SENSEBOXID ""
@@ -40,6 +41,7 @@ enum LoggerEntry {
     Loggeraircms,
     LoggerInflux,
     LoggerCustom,
+    LoggerRadiation,
     LoggerCount
 };
 
@@ -100,6 +102,10 @@ static const char URL_INFLUX[] PROGMEM = "/write?db=sensorcommunity";
 #define PWD_INFLUX ""
 static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = "feinstaub";
 #define SSL_INFLUX 0
+
+// define own radiation API
+static const char HOST_RADIATION[] PROGMEM = "radiation.server";
+static const char URL_RADIATION[] PROGMEM = "/path with placeholders: {value} (floating-point uR/h), {macid}";
 
 //  === pin assignments for NodeMCU V2 board ===================================
 #if defined(ESP8266)
