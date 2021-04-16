@@ -562,9 +562,6 @@ const __FlashStringHelper* loggerDescription(unsigned i) {
         case LoggerCustom:
             logger = F("Custom");
             break;
-		case LoggerRadiation:
-			logger = F("radiation");
-			break;
     }
     return logger;
 }

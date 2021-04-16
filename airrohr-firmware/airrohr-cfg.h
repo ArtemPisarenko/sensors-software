@@ -88,9 +88,6 @@ enum ConfigShapeId {
 	Config_pwd_influx,
 	Config_measurement_name_influx,
 	Config_ssl_influx,
-	Config_send2radiation,
-	Config_host_radiation,
-	Config_url_radiation,
 };
 static constexpr char CFG_KEY_CURRENT_LANG[] PROGMEM = "current_lang";
 static constexpr char CFG_KEY_WLANSSID[] PROGMEM = "wlanssid";
@@ -155,9 +152,6 @@ static constexpr char CFG_KEY_USER_INFLUX[] PROGMEM = "user_influx";
 static constexpr char CFG_KEY_PWD_INFLUX[] PROGMEM = "pwd_influx";
 static constexpr char CFG_KEY_MEASUREMENT_NAME_INFLUX[] PROGMEM = "measurement_name_influx";
 static constexpr char CFG_KEY_SSL_INFLUX[] PROGMEM = "ssl_influx";
-static constexpr char CFG_KEY_SEND2RADIATION[] PROGMEM = "send2radiation";
-static constexpr char CFG_KEY_HOST_RADIATION[] PROGMEM = "host_radiation";
-static constexpr char CFG_KEY_URL_RADIATION[] PROGMEM = "url_radiation";
 static constexpr ConfigShapeEntry configShape[] PROGMEM = {
 	{ Config_Type_String, sizeof(cfg::current_lang)-1, CFG_KEY_CURRENT_LANG, cfg::current_lang },
 	{ Config_Type_String, sizeof(cfg::wlanssid)-1, CFG_KEY_WLANSSID, cfg::wlanssid },
@@ -222,7 +216,4 @@ static constexpr ConfigShapeEntry configShape[] PROGMEM = {
 	{ Config_Type_Password, sizeof(cfg::pwd_influx)-1, CFG_KEY_PWD_INFLUX, cfg::pwd_influx },
 	{ Config_Type_String, sizeof(cfg::measurement_name_influx)-1, CFG_KEY_MEASUREMENT_NAME_INFLUX, cfg::measurement_name_influx },
 	{ Config_Type_Bool, 0, CFG_KEY_SSL_INFLUX, &cfg::ssl_influx },
-	{ Config_Type_Bool, 0, CFG_KEY_SEND2RADIATION, &cfg::send2radiation },
-	{ Config_Type_String, sizeof(cfg::host_radiation)-1, CFG_KEY_HOST_RADIATION, cfg::host_radiation },
-	{ Config_Type_String, sizeof(cfg::url_radiation)-1, CFG_KEY_URL_RADIATION, cfg::url_radiation },
 };
