@@ -16,17 +16,17 @@ const char WWW_PASSWORD[] PROGMEM = "";
 
 // Where to send the data?
 #define SEND2SENSORCOMMUNITY 1
-#define SSL_SENSORCOMMUNITY 0
+#define SSL_SENSORCOMMUNITY 1
 #define SEND2MADAVI 1
-#define SSL_MADAVI 0
-#define SEND2SENSEMAP 0
-#define SEND2FSAPP 0
+#define SSL_MADAVI 1
+#define SEND2SENSEMAP 1
+#define SEND2FSAPP 1
 #define SSL_FSAPP 0
-#define SEND2AIRCMS 0
+#define SEND2AIRCMS 1
 #define SEND2MQTT 0
-#define SEND2INFLUX 0
+#define SEND2INFLUX 1
 #define SEND2LORA 0
-#define SEND2CSV 0
+#define SEND2CSV 1
 #define SEND2CUSTOM 0
 
 // OpenSenseMap
@@ -85,17 +85,17 @@ static const char NTP_SERVER_1[] PROGMEM = "0.pool.ntp.org";
 static const char NTP_SERVER_2[] PROGMEM = "1.pool.ntp.org";
 
 // define own API
-static const char HOST_CUSTOM[] PROGMEM = "192.168.234.1";
-static const char URL_CUSTOM[] PROGMEM = "/data.php";
-#define PORT_CUSTOM 80
+static const char HOST_CUSTOM[] PROGMEM = "air.omsk.vip";
+static const char URL_CUSTOM[] PROGMEM = "/data.php?AO_lat=55&AO_lon=73.3&AO_alt=99&AO_hagl=30&City=Omsk&Addr=Perelyota25&Iplan=192.168.1.80";
+#define PORT_CUSTOM 443
 #define USER_CUSTOM ""
 #define PWD_CUSTOM ""
-#define SSL_CUSTOM 0
+#define SSL_CUSTOM 1
 
 // define own InfluxDB
-static const char HOST_INFLUX[] PROGMEM = "influx.server";
-static const char URL_INFLUX[] PROGMEM = "/write?db=sensorcommunity";
-#define PORT_INFLUX 8086
+static const char HOST_INFLUX[] PROGMEM = "narodmon.ru";
+static const char URL_INFLUX[] PROGMEM = "/post.php";
+#define PORT_INFLUX 80
 #define USER_INFLUX ""
 #define PWD_INFLUX ""
 static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = "feinstaub";
@@ -216,7 +216,7 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = "feinstaub";
 
 
 // DHT22, temperature, humidity
-#define DHT_READ 1
+#define DHT_READ 0
 #define DHT_TYPE DHT22
 #define DHT_API_PIN 7
 
@@ -255,7 +255,7 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = "feinstaub";
 #define BMP_API_PIN 3
 
 // BMP280/BME280, temperature, pressure (humidity on BME280)
-#define BMX280_READ 0
+#define BMX280_READ 1
 #define BMP280_API_PIN 3
 #define BME280_API_PIN 11
 
