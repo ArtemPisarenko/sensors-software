@@ -109,7 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Висота";
 const char INTL_TIME_UTC[] PROGMEM = "Час (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "потужність сигналу";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "якість сигналу";
-const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation";
 #define INTL_NUMBER_OF_MEASUREMENTS "Кількість вимірювань"
 #define INTL_TIME_SENDING_MS "Час, витрачений на відправлення"
 #define INTL_SENSOR "Сенсор"

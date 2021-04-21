@@ -109,7 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Højde";
 const char INTL_TIME_UTC[] PROGMEM = "Tid (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "Signal";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "Kvalitet";
-const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation";
 #define INTL_NUMBER_OF_MEASUREMENTS "Antal målinger"
 #define INTL_TIME_SENDING_MS "Tid brugt på afsendelse"
 #define INTL_SENSOR "Sensor"

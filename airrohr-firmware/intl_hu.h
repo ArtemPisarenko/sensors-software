@@ -109,7 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Tengerszint feletti magasság";
 const char INTL_TIME_UTC[] PROGMEM = "Idő";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "Jelerősség";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "Jelminőség";
-const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation";
 #define INTL_NUMBER_OF_MEASUREMENTS "Mérések száma:"
 #define INTL_TIME_SENDING_MS "Feltöltéssel töltött idő:"
 #define INTL_SENSOR "Szenzor"

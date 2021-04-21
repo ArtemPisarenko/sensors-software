@@ -109,7 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Rakım";
 const char INTL_TIME_UTC[] PROGMEM = "zaman (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "sinyal gücü";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "sinyal kalitesi";
-const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation";
 #define INTL_NUMBER_OF_MEASUREMENTS "Ölçümlerin sayısı"
 #define INTL_TIME_SENDING_MS "Göndermede harcanan süre"
 #define INTL_SENSOR "algılayıcı(Sensör)"

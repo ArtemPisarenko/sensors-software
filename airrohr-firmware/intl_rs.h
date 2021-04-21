@@ -109,7 +109,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Nadmorska visina";
 const char INTL_TIME_UTC[] PROGMEM = "Vreme (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "jačina signala";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "kvalitet signala";
-const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation";
 #define INTL_NUMBER_OF_MEASUREMENTS "Broj merenja"
 #define INTL_TIME_SENDING_MS "Vreme utrošeno za slanje"
 #define INTL_SENSOR "Senzor"

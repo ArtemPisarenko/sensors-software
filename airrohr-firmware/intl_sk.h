@@ -108,7 +108,7 @@ const char INTL_ALTITUDE[] PROGMEM = "Nadm. výška";
 const char INTL_TIME_UTC[] PROGMEM = "Čas (UTC)";
 const char INTL_SIGNAL_STRENGTH[] PROGMEM = "sila signálu";
 const char INTL_SIGNAL_QUALITY[] PROGMEM = "kvalita signálu";
-const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation noise";
+const char INTL_RADIATION_STATIC[] PROGMEM = "Background radiation";
 #define INTL_NUMBER_OF_MEASUREMENTS "Počet meraní"
 #define INTL_TIME_SENDING_MS "Trvanie odosielania dát"
 #define INTL_SENSOR "Senzor"
