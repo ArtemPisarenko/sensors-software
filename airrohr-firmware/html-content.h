@@ -71,7 +71,7 @@ input[type=submit]:hover{background:#d44}\
 
 const char WEB_PAGE_HEADER_HEAD[] PROGMEM = "<meta name='viewport' content='width=device-width'/>\
 <meta name='theme-color' content='#000'>\
-<link rel='stylesheet' href='" STATIC_PREFIX "?r=css'>\
+<link rel='stylesheet' href='" STATIC_PREFIX "?r=css&ver=" SOFTWARE_VERSION_STR "'>\
 </style>\
 </head><body>\
 <div class='canvas'>\
