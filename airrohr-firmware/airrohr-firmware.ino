@@ -1602,7 +1602,7 @@ static void webserver_status() {
 	add_table_row_from_value(page_content, FPSTR(INTL_TIME_UTC), ctime(&now));
 	add_table_row_from_value(page_content, F("Uptime"), delayToString(millis() - time_point_device_start_ms));
 #if defined(ESP8266)
-	add_table_row_from_value(page_content, F("Reset Reason"), ESP.getResetReason());
+	add_table_row_from_value(page_content, F("Reset Reason"), ESP.getResetInfo());
 #endif
 	if (cfg::sds_read) {
 		page_content += FPSTR(EMPTY_ROW);
