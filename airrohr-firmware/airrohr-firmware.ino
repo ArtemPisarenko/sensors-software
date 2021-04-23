@@ -2207,6 +2207,8 @@ static unsigned long sendData(const LoggerEntry logger, const String& data, cons
 		http.addHeader(F("Content-Type"), contentType);
 		http.addHeader(F("X-Sensor"), String(F(SENSOR_BASENAME)) + esp_chipid);
 		http.addHeader(F("X-MAC-ID"), String(F(SENSOR_BASENAME)) + esp_mac_id);
+		http.addHeader(F("X-WiFi-AP-MAC"), WiFi.BSSIDstr());
+		http.addHeader(F("X-WiFi-Client-IP"), WiFi.localIP().toString());
 		if (pin) {
 			http.addHeader(F("X-PIN"), String(pin));
 		}
