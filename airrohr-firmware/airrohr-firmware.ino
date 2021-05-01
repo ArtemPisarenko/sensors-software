@@ -3383,7 +3383,7 @@ static void fetchSensorRadSens(String& s) {
  * OTAUpdate                                                     *
  *****************************************************************/
 
-static bool fwDownloadStream(WiFiClientSecure& client, const String& url, Stream* ostream) {
+static bool fwDownloadStream(WiFiClient& client, const String& url, Stream* ostream) {
 
 	HTTPClient http;
 	int bytes_written = -1;
@@ -3427,7 +3427,7 @@ static bool fwDownloadStream(WiFiClientSecure& client, const String& url, Stream
 	return false;
 }
 
-static bool fwDownloadStreamFile(WiFiClientSecure& client, const String& url, const String& fname) {
+static bool fwDownloadStreamFile(WiFiClient& client, const String& url, const String& fname) {
 
 	String fname_new(fname);
 	fname_new += F(".new");
@@ -3474,12 +3474,15 @@ static void twoStageOTAUpdate() {
 	fetch_name += lang_variant;
 	fetch_name += F("_airomsk.bin");
 
+#if FW_DOWNLOAD_SSL
 	WiFiClientSecure client;
 	BearSSL::Session clientSession;
-
 	client.setBufferSizes(1024, TCP_MSS > 1024 ? 2048 : 1024);
 	client.setSession(&clientSession);
 	configureCACertTrustAnchor(&client);
+#else
+	WiFiClient client;
+#endif
 
 	String fetch_md5_name(fetch_name);
 	fetch_md5_name += F(".md5");
