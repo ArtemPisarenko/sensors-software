@@ -37,6 +37,8 @@ const char INTL_TEMP_CORRECTION[] PROGMEM = "";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
 const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "";
+const char INTL_WANACCESS_PORT[] PROGMEM = "";
+const char INTL_WANACCESS_AUTOSETUP[] PROGMEM = "";
 #define INTL_REPORT_ISSUE ""
 
 const char INTL_FS_WIFI_DESCRIPTION[] PROGMEM = "";

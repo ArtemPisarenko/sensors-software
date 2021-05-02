@@ -14,6 +14,10 @@ const char WWW_PASSWORD[] PROGMEM = "";
 #define FS_SSID ""
 #define FS_PWD ""
 
+// Config of WAN access to webserver
+#define WANACCESS_PORT 54321
+#define WANACCESS_AUTOSETUP 1
+
 // Where to send the data?
 #define SEND2SENSORCOMMUNITY 1
 #define SSL_SENSORCOMMUNITY 1

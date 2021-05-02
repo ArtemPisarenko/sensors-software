@@ -111,6 +111,7 @@ String SOFTWARE_VERSION(SOFTWARE_VERSION_STR);
 #include <StreamString.h>
 #include <DallasTemperature.h>
 #include <TinyGPS++.h>
+#include <TinyUPnP.h>
 #include "./bmx280_i2c.h"
 #include "./sps30_i2c.h"
 #include "./dnms_i2c.h"
@@ -153,6 +154,10 @@ namespace cfg {
 	// credentials of the sensor in access point mode
 	char fs_ssid[LEN_FS_SSID] = FS_SSID;
 	char fs_pwd[LEN_CFG_PASSWORD] = FS_PWD;
+
+	// WAN access to webserver
+	unsigned wanaccess_port = WANACCESS_PORT;
+	bool wanaccess_autosetup = WANACCESS_AUTOSETUP;
 
 	// (in)active sensors
 	bool dht_read = DHT_READ;
@@ -322,6 +327,11 @@ DallasTemperature ds18b20(&oneWire);
  * GPS declaration                                               *
  *****************************************************************/
 TinyGPSPlus gps;
+
+/*****************************************************************
+ * UPnP declaration                                               *
+ *****************************************************************/
+TinyUPnP tinyUPnP(UPNP_TIMEOUT_MS);
 
 /*****************************************************************
  * ClimateGuard RadSens declaration                              *
@@ -510,6 +520,8 @@ struct struct_wifiInfo {
 
 struct struct_wifiInfo *wifiInfo;
 uint8_t count_wifiInfo;
+
+bool upnp_active = false;
 
 #define msSince(timestamp_before) (act_milli - (timestamp_before))
 
@@ -1070,6 +1082,17 @@ static void webserver_config_send_body_get(String& page_content) {
 
 	// Paginate page after ~ 1500 Bytes
 	server.sendContent(page_content);
+	page_content = emptyString;
+
+	page_content += FPSTR(TABLE_TAG_OPEN);
+	add_form_input(page_content, Config_wanaccess_port, FPSTR(INTL_WANACCESS_PORT), MAX_PORT_DIGITS);
+	page_content += FPSTR(TABLE_TAG_CLOSE_BR);
+	add_form_checkbox(Config_wanaccess_autosetup, FPSTR(INTL_WANACCESS_AUTOSETUP));
+	page_content += FPSTR(BR_TAG);
+
+	// Paginate page after ~ 1500 Bytes
+	server.sendContent(page_content);
+	page_content = emptyString;
 
 	if (! wificonfig_loop) {
 		page_content = FPSTR(INTL_FS_WIFI_DESCRIPTION);
@@ -2209,6 +2232,7 @@ static unsigned long sendData(const LoggerEntry logger, const String& data, cons
 		http.addHeader(F("X-MAC-ID"), String(F(SENSOR_BASENAME)) + esp_mac_id);
 		http.addHeader(F("X-WiFi-AP-MAC"), WiFi.BSSIDstr());
 		http.addHeader(F("X-WiFi-Client-IP"), WiFi.localIP().toString());
+		http.addHeader(F("X-WAN-Access-Port"), String(cfg::wanaccess_port));
 		if (pin) {
 			http.addHeader(F("X-PIN"), String(pin));
 		}
@@ -4373,6 +4397,20 @@ void setup(void) {
 		disable_unneeded_nmea();
 	}
 
+	if (cfg::wanaccess_autosetup && cfg::www_basicauth_enabled) {
+		debug_outln_info(F("WAN access auto-setup active"));
+		upnp_active = true;
+		tinyUPnP.addPortMappingConfig(WiFi.localIP(), 80, cfg::wanaccess_port, RULE_PROTOCOL_TCP,
+										UPNP_LEASE_DURATION_SECS,
+										cfg::fs_ssid);
+	}
+
+	if (upnp_active) {
+		debug_outln_info(F("Committing UPnP port mappings to IGD..."));
+		auto result = tinyUPnP.commitPortMappings();
+		debug_outln_info(F("Result: "), String(result));
+	}
+
 	powerOnTestSensors();
 	logEnabledAPIs();
 	logEnabledDisplays();
@@ -4481,6 +4519,12 @@ void loop(void) {
 			(cfg::has_display || cfg::has_sh1106 || lcd_1602 || lcd_2004)) {
 		display_values();
 		last_display_millis = act_milli;
+	}
+
+	if (upnp_active) {
+		auto result = tinyUPnP.updatePortMappings(UPNP_UPDATE_INTERVAL_MS);
+		if (result != NOP)
+			debug_outln_info(F("Update UPnP port mappings for IGD, result: "), String(result));
 	}
 
 	server.handleClient();

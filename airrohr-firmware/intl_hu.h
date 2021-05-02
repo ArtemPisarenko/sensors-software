@@ -37,6 +37,8 @@ const char INTL_TEMP_CORRECTION[] PROGMEM = "Korrekció °C";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
 const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "Azonosítás";
+const char INTL_WANACCESS_PORT[] PROGMEM = "WAN access port";
+const char INTL_WANACCESS_AUTOSETUP[] PROGMEM = "WAN access auto setup (UPnP, only with authentication)";
 #define INTL_REPORT_ISSUE "Jelents egy hibát"
 
 const char INTL_FS_WIFI_DESCRIPTION[] PROGMEM = "WiFi Szenzor konfigurációs módban";

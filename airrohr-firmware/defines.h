@@ -19,6 +19,10 @@
 
 #define LEN_FS_SSID 33				// credentials for sensor access point mode
 
+#define UPNP_TIMEOUT_MS 10000 // 10 seconds
+#define UPNP_UPDATE_INTERVAL_MS 600000 // 10 minutes
+#define UPNP_LEASE_DURATION_SECS 36000 // 1 hour
+
 #define LEN_DNMS_CORRECTION 8
 #define LEN_TEMP_CORRECTION 8
 

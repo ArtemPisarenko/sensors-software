@@ -9,6 +9,8 @@ Password		www_password
 String		fs_ssid
 Password		fs_pwd
 Bool		www_basicauth_enabled
+UInt		wanaccess_port
+Bool		wanaccess_autosetup
 Bool		dht_read
 Bool		htu21d_read
 Bool		ppd_read

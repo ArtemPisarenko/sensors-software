@@ -36,6 +36,8 @@ const char INTL_TEMP_CORRECTION[] PROGMEM = "Корекция в °C";
 const char INTL_NEO6M[] PROGMEM = "GPS (NEO 6M)";
 const char INTL_RADSENS[] PROGMEM = "Dosimeter-radiometer (ClimateGuard RadSens)";
 const char INTL_BASICAUTH[] PROGMEM = "Оторизация";
+const char INTL_WANACCESS_PORT[] PROGMEM = "WAN access port";
+const char INTL_WANACCESS_AUTOSETUP[] PROGMEM = "WAN access auto setup (UPnP, only with authentication)";
 #define INTL_REPORT_ISSUE "Подаване на сигнал за проблем"
 
 const char INTL_FS_WIFI_DESCRIPTION[] PROGMEM = "WiFi сензор в режим на конфигуриране";
