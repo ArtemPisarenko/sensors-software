@@ -20,17 +20,17 @@ const char WWW_PASSWORD[] PROGMEM = "";
 
 // Where to send the data?
 #define SEND2SENSORCOMMUNITY 1
-#define SSL_SENSORCOMMUNITY 1
+#define SSL_SENSORCOMMUNITY 0
 #define SEND2MADAVI 1
-#define SSL_MADAVI 1
-#define SEND2SENSEMAP 1
+#define SSL_MADAVI 0
+#define SEND2SENSEMAP 0
 #define SEND2FSAPP 1
 #define SSL_FSAPP 0
 #define SEND2AIRCMS 1
 #define SEND2MQTT 0
 #define SEND2INFLUX 1
 #define SEND2LORA 0
-#define SEND2CSV 1
+#define SEND2CSV 0
 #define SEND2CUSTOM 0
 
 // OpenSenseMap
@@ -91,11 +91,11 @@ static const char NTP_SERVER_2[] PROGMEM = "1.pool.ntp.org";
 
 // define own API
 static const char HOST_CUSTOM[] PROGMEM = "air.omsk.vip";
-static const char URL_CUSTOM[] PROGMEM = "/data.php?AO_lat=55&AO_lon=73.3&AO_alt=99&AO_hagl=30&City=Omsk&Addr=Perelyota25&Iplan=192.168.1.80";
-#define PORT_CUSTOM 443
+static const char URL_CUSTOM[] PROGMEM = "/data.php?AO_lat=54.982&AO_lon=73.398&AO_alt=114&AO_hagl=8&City=Омск&Addr=Куйбышева,63";
+#define PORT_CUSTOM 80
 #define USER_CUSTOM ""
 #define PWD_CUSTOM ""
-#define SSL_CUSTOM 1
+#define SSL_CUSTOM 0
 
 // define own InfluxDB
 static const char HOST_INFLUX[] PROGMEM = "narodmon.ru";
