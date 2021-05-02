@@ -25,7 +25,6 @@ struct ConfigShapeEntry {
 };
 
 enum ConfigShapeId {
-	Config_current_lang,
 	Config_wlanssid,
 	Config_wlanpwd,
 	Config_www_username,
@@ -61,7 +60,6 @@ enum ConfigShapeId {
 	Config_send2aircms,
 	Config_send2csv,
 	Config_auto_update,
-	Config_use_beta,
 	Config_has_display,
 	Config_has_sh1106,
 	Config_has_flipped_display,
@@ -91,7 +89,6 @@ enum ConfigShapeId {
 	Config_measurement_name_influx,
 	Config_ssl_influx,
 };
-static constexpr char CFG_KEY_CURRENT_LANG[] PROGMEM = "current_lang";
 static constexpr char CFG_KEY_WLANSSID[] PROGMEM = "wlanssid";
 static constexpr char CFG_KEY_WLANPWD[] PROGMEM = "wlanpwd";
 static constexpr char CFG_KEY_WWW_USERNAME[] PROGMEM = "www_username";
@@ -127,7 +124,6 @@ static constexpr char CFG_KEY_SEND2FSAPP[] PROGMEM = "send2fsapp";
 static constexpr char CFG_KEY_SEND2AIRCMS[] PROGMEM = "send2aircms";
 static constexpr char CFG_KEY_SEND2CSV[] PROGMEM = "send2csv";
 static constexpr char CFG_KEY_AUTO_UPDATE[] PROGMEM = "auto_update";
-static constexpr char CFG_KEY_USE_BETA[] PROGMEM = "use_beta";
 static constexpr char CFG_KEY_HAS_DISPLAY[] PROGMEM = "has_display";
 static constexpr char CFG_KEY_HAS_SH1106[] PROGMEM = "has_sh1106";
 static constexpr char CFG_KEY_HAS_FLIPPED_DISPLAY[] PROGMEM = "has_flipped_display";
@@ -157,7 +153,6 @@ static constexpr char CFG_KEY_PWD_INFLUX[] PROGMEM = "pwd_influx";
 static constexpr char CFG_KEY_MEASUREMENT_NAME_INFLUX[] PROGMEM = "measurement_name_influx";
 static constexpr char CFG_KEY_SSL_INFLUX[] PROGMEM = "ssl_influx";
 static constexpr ConfigShapeEntry configShape[] PROGMEM = {
-	{ Config_Type_String, sizeof(cfg::current_lang)-1, CFG_KEY_CURRENT_LANG, cfg::current_lang },
 	{ Config_Type_String, sizeof(cfg::wlanssid)-1, CFG_KEY_WLANSSID, cfg::wlanssid },
 	{ Config_Type_Password, sizeof(cfg::wlanpwd)-1, CFG_KEY_WLANPWD, cfg::wlanpwd },
 	{ Config_Type_String, sizeof(cfg::www_username)-1, CFG_KEY_WWW_USERNAME, cfg::www_username },
@@ -193,7 +188,6 @@ static constexpr ConfigShapeEntry configShape[] PROGMEM = {
 	{ Config_Type_Bool, 0, CFG_KEY_SEND2AIRCMS, &cfg::send2aircms },
 	{ Config_Type_Bool, 0, CFG_KEY_SEND2CSV, &cfg::send2csv },
 	{ Config_Type_Bool, 0, CFG_KEY_AUTO_UPDATE, &cfg::auto_update },
-	{ Config_Type_Bool, 0, CFG_KEY_USE_BETA, &cfg::use_beta },
 	{ Config_Type_Bool, 0, CFG_KEY_HAS_DISPLAY, &cfg::has_display },
 	{ Config_Type_Bool, 0, CFG_KEY_HAS_SH1106, &cfg::has_sh1106 },
 	{ Config_Type_Bool, 0, CFG_KEY_HAS_FLIPPED_DISPLAY, &cfg::has_flipped_display },

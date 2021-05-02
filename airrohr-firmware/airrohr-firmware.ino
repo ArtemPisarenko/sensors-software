@@ -140,8 +140,6 @@ namespace cfg {
 	unsigned time_for_wifi_config = 600000;
 	unsigned sending_intervall_ms = 145000;
 
-	char current_lang[3];
-
 	// credentials for basic auth of internal web server
 	bool www_basicauth_enabled = WWW_BASICAUTH_ENABLED;
 	char www_username[LEN_WWW_USERNAME];
@@ -189,7 +187,6 @@ namespace cfg {
 	bool send2csv = SEND2CSV;
 
 	bool auto_update = AUTO_UPDATE;
-	bool use_beta = USE_BETA;
 
 	// (in)active displays
 	bool has_display = HAS_DISPLAY;											// OLED with SSD1306 and I2C
@@ -224,7 +221,6 @@ namespace cfg {
 	char pwd_custom[LEN_CFG_PASSWORD] = PWD_CUSTOM;
 
 	void initNonTrivials(const char* id) {
-		strcpy(cfg::current_lang, CURRENT_LANG);
 		strcpy_P(www_username, WWW_USERNAME);
 		strcpy_P(www_password, WWW_PASSWORD);
 		strcpy_P(wlanssid, WLANSSID);
@@ -925,39 +921,6 @@ static String form_submit(const String& value) {
 	return s;
 }
 
-static String form_select_lang() {
-	String s_select = F(" selected='selected'");
-	String s = F(	"<tr>"
-					"<td>" INTL_LANGUAGE ":&nbsp;</td>"
-					"<td>"
-					"<select id='current_lang' name='current_lang'>"
-					"<option value='BG'>Bulgarian (BG)</option>"
-					"<option value='CZ'>Český (CZ)</option>"
-					"<option value='DE'>Deutsch (DE)</option>"
-					"<option value='DK'>Dansk (DK)</option>"
-					"<option value='EN'>English (EN)</option>"
-					"<option value='ES'>Español (ES)</option>"
-					"<option value='FR'>Français (FR)</option>"
-					"<option value='IT'>Italiano (IT)</option>"
-					"<option value='LU'>Lëtzebuergesch (LU)</option>"
-					"<option value='NL'>Nederlands (NL)</option>"
-					"<option value='HU'>Magyar (HU)</option>"
-					"<option value='PL'>Polski (PL)</option>"
-					"<option value='PT'>Português (PT)</option>"
-					"<option value='RS'>Srpski (RS)</option>"
-					"<option value='RU'>Русский (RU)</option>"
-					"<option value='SK'>Slovenský (SK)</option>"
-					"<option value='SE'>Svenska (SE)</option>"
-					"<option value='TR'>Türkçe (TR)</option>"
-					"<option value='UA'>український (UA)</option>"
-					"</select>"
-					"</td>"
-					"</tr>");
-
-	s.replace("'" + String(cfg::current_lang) + "'>", "'" + String(cfg::current_lang) + "'" + s_select + ">");
-	return s;
-}
-
 static void add_warning_first_cycle(String& page_content) {
 	String s = FPSTR(INTL_TIME_TO_FIRST_MEASUREMENT);
 	unsigned int time_to_first = cfg::sending_intervall_ms - msSince(starttime);
@@ -1128,18 +1091,6 @@ static void webserver_config_send_body_get(String& page_content) {
 	page_content = FPSTR(WEB_BR_LF_B);
 	page_content += F(INTL_FIRMWARE "</b>&nbsp;");
 	add_form_checkbox(Config_auto_update, FPSTR(INTL_AUTO_UPDATE));
-	add_form_checkbox(Config_use_beta, FPSTR(INTL_USE_BETA));
-
-	page_content += FPSTR(TABLE_TAG_OPEN);
-	page_content += form_select_lang();
-	page_content += FPSTR(TABLE_TAG_CLOSE_BR);
-
-	page_content += F("<script>"
-	    "var $ = function(e) { return document.getElementById(e); };"
-	    "function updateOTAOptions() { "
-		"$('current_lang').disabled = $('use_beta').disabled = !$('auto_update').checked; "
-		"}; updateOTAOptions(); $('auto_update').onchange = updateOTAOptions;"
-		"</script>");
 
 	page_content += FPSTR(TABLE_TAG_OPEN);
 	add_form_input(page_content, Config_debug, FPSTR(INTL_DEBUG_LEVEL), 1);
@@ -3422,13 +3373,10 @@ static bool fwDownloadStream(WiFiClient& client, const String& url, Stream* ostr
 	agent += ' ';
 	agent += SDS_version_date();
 	agent += ' ';
-	agent += String(cfg::current_lang);
+	agent += String(CURRENT_LANG);
 	agent += ' ';
 	agent += String(CURRENT_LANG);
 	agent += ' ';
-	if (cfg::use_beta) {
-		agent += F("BETA");
-	}
 
 	http.setUserAgent(agent);
 	http.setReuse(false);
@@ -3485,16 +3433,10 @@ static void twoStageOTAUpdate() {
 #if defined(ESP8266)
 	debug_outln_info(F("twoStageOTAUpdate"));
 
-	String lang_variant(cfg::current_lang);
-	if (lang_variant.length() != 2) {
-		lang_variant = CURRENT_LANG;
-	}
+	String lang_variant(CURRENT_LANG);
 	lang_variant.toLowerCase();
 
 	String fetch_name(F(OTA_BASENAME "/update/latest_"));
-	if (cfg::use_beta) {
-		fetch_name = F(OTA_BASENAME "/beta/latest_");
-	}
 	fetch_name += lang_variant;
 	fetch_name += F("_airomsk.bin");
 

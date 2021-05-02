@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 configshape_in = """
-String		current_lang
 String		wlanssid
 Password		wlanpwd
 String		www_username
@@ -37,7 +36,6 @@ Bool		send2fsapp
 Bool		send2aircms
 Bool		send2csv
 Bool		auto_update
-Bool		use_beta
 Bool		has_display
 Bool		has_sh1106
 Bool		has_flipped_display

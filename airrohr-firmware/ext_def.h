@@ -293,9 +293,6 @@ static const char MEASUREMENT_NAME_INFLUX[] PROGMEM = "feinstaub";
 // automatic firmware updates
 #define AUTO_UPDATE 1
 
-// use beta firmware
-#define USE_BETA 0
-
 // OLED Display SSD1306 connected?
 #define HAS_DISPLAY 0
 
