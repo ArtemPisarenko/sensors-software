@@ -824,6 +824,19 @@ static void createLoggerConfigs() {
  * html helper functions                                         *
  *****************************************************************/
 
+static void substitute_html_sensor_ids(String& s) {
+	s.replace("{id}", esp_chipid);
+	s.replace("{macid}", esp_mac_id);
+	s.replace("{mac}", WiFi.macAddress());
+}
+
+static String make_html_substituted_sensor_ids(const __FlashStringHelper* text) {
+	RESERVE_STRING(s, MED_STR);
+	s = text;
+	substitute_html_sensor_ids(s);
+	return s;
+}
+
 static void start_html_page(String& page_content, const String& title) {
 	last_page_load = millis();
 
@@ -842,9 +855,7 @@ static void start_html_page(String& page_content, const String& title) {
 	} else {
 		s.replace("{n}", emptyString);
 	}
-	s.replace("{id}", esp_chipid);
-	s.replace("{macid}", esp_mac_id);
-	s.replace("{mac}", WiFi.macAddress());
+	substitute_html_sensor_ids(s);
 	page_content += s;
 }
 
@@ -852,7 +863,10 @@ static void end_html_page(String& page_content) {
 	if (page_content.length()) {
 		server.sendContent(page_content);
 	}
-	server.sendContent_P(WEB_PAGE_FOOTER);
+	RESERVE_STRING(s, 2560);
+	s = FPSTR(WEB_PAGE_FOOTER);
+	substitute_html_sensor_ids(s);
+	server.sendContent(s);
 }
 
 static void add_form_input(String& page_content, const ConfigShapeId cfgid, const __FlashStringHelper* info, const int length) {
@@ -1144,18 +1158,18 @@ static void webserver_config_send_body_get(String& page_content) {
 
 	page_content += tmpl(FPSTR(INTL_SEND_TO), F("APIs"));
 	page_content += FPSTR(BR_TAG);
-	page_content += form_checkbox(Config_send2dusti, FPSTR(WEB_SENSORCOMMUNITY), false);
+	page_content += form_checkbox(Config_send2dusti, make_html_substituted_sensor_ids(FPSTR(WEB_SENSORCOMMUNITY)), false);
 	page_content += FPSTR(WEB_NBSP_NBSP_BRACE);
 	page_content += form_checkbox(Config_ssl_dusti, FPSTR(WEB_HTTPS), false);
 	page_content += FPSTR(WEB_BRACE_BR);
-	page_content += form_checkbox(Config_send2madavi, FPSTR(WEB_MADAVI), false);
+	page_content += form_checkbox(Config_send2madavi, make_html_substituted_sensor_ids(FPSTR(WEB_MADAVI)), false);
 	page_content += FPSTR(WEB_NBSP_NBSP_BRACE);
 	page_content += form_checkbox(Config_ssl_madavi, FPSTR(WEB_HTTPS), false);
 	page_content += FPSTR(WEB_BRACE_BR);
 	add_form_checkbox(Config_send2csv, FPSTR(WEB_CSV));
-	add_form_checkbox(Config_send2fsapp, FPSTR(WEB_FEINSTAUB_APP));
-	add_form_checkbox(Config_send2aircms, FPSTR(WEB_AIRCMS));
-	add_form_checkbox(Config_send2sensemap, FPSTR(WEB_OPENSENSEMAP));
+	add_form_checkbox(Config_send2fsapp, make_html_substituted_sensor_ids(FPSTR(WEB_FEINSTAUB_APP)));
+	add_form_checkbox(Config_send2aircms, make_html_substituted_sensor_ids(FPSTR(WEB_AIRCMS)));
+	add_form_checkbox(Config_send2sensemap, make_html_substituted_sensor_ids(FPSTR(WEB_OPENSENSEMAP)));
 	page_content += FPSTR(TABLE_TAG_OPEN);
 	add_form_input(page_content, Config_senseboxid, F("senseBox&nbsp;ID"), LEN_SENSEBOXID-1);
 
