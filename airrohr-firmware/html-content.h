@@ -75,7 +75,7 @@ const char WEB_PAGE_HEADER_HEAD[] PROGMEM = "<meta name='viewport' content='widt
 </style>\
 </head><body>\
 <div class='canvas'>\
-<a class='b' href='https://air.omsk.vip/' style='background:none;display:inline'>\
+<a class='b' href='https://air.omsk.vip/' target='_blank' style='background:none;display:inline'>\
 <img src='https://air.omsk.vip/web_images/logo.png' alt='Страница показаний проекта ДЫШИ!Омск' style='float:left;margin:10px' width='100' height='100'/></a>";
 
 const char WEB_PAGE_HEADER_BODY[] PROGMEM = "<h3 style='margin:0 10px; color:#fff;'>" INTL_PM_SENSOR "</h3>\
@@ -88,13 +88,13 @@ const char TABLE_TAG_OPEN[] PROGMEM = "<table>";
 const char TABLE_TAG_CLOSE_BR[] PROGMEM = "</table>";
 const char EMPTY_ROW[] PROGMEM = "<tr><td colspan='3'>&nbsp;</td></tr>";
 
-const char WEB_PAGE_FOOTER[] PROGMEM = "<br/><br/>"
-                "<a class='b' href='/' style='display:inline;'>" INTL_BACK_TO_HOME "</a><br/><br/><br/>"
+const char WEB_PAGE_FOOTER[] PROGMEM = "<br/>"
+                "<a class='b' href='/' style='display:inline; width:100%'>" INTL_BACK_TO_HOME "</a><br/><br/>"
 		"</div><footer class='footer'><div style='padding:16px; font-weight: bold; color:#fff;'>"
-		"ДЫШИ!Омск:&nbsp;<a href='https://air.omsk.vip/' target='_blank' rel='noreferrer' style='color:#fe0;'>&nbsp;Монитор </a>&nbsp;&nbsp;<a href='https://air.omsk.vip/vk' target='_blank' rel='noreferrer' style='color:#69c;'> VK.COM </a>&nbsp;&nbsp;<a href='https://air.omsk.vip/ok' target='_blank' rel='noreferrer' style='color:#fa0;'> OK.RU </a>&nbsp;&nbsp;<a href='https://air.omsk.vip/insta' target='_blank' rel='noreferrer' style='color:#e27;'> Instagram&nbsp;</a><BR><a href='https://codefor.de/stuttgart/' target='_blank' rel='noreferrer' style='color:#fff;'>"
-		"&copy; Open Knowledge Lab Stuttgart a.o. (Code for Germany)</a>&nbsp;&nbsp("
+		"ДЫШИ!Омск:&nbsp;<a href='https://air.omsk.vip/data?filter={id}' target='_blank' rel='noreferrer' alt='Монитор' style='color:#fe0;'><img src='https://air.omsk.vip/favicon.ico' height='22'></a>&nbsp;&nbsp;<a href='https://air.omsk.vip/vk' target='_blank' rel='noreferrer' alt='Проект ДЫШИ!Омск в VK' style='color:#69c;'><img src='https://air.omsk.vip/data/pic/vk.com.ico' height='22'></a>&nbsp;&nbsp;<a href='https://air.omsk.vip/ok' target='_blank' rel='noreferrer' alt='Проект ДЫШИ!Омск в OK' style='color:#fa0;'><img src='https://air.omsk.vip/data/pic/ok.ru.ico' height='22'></a>&nbsp;&nbsp;<a href='https://air.omsk.vip/insta' target='_blank' rel='noreferrer' alt='Проект ДЫШИ!Омск в Instagram' style='color:#e27;'><img src='https://air.omsk.vip/data/pic/instagram.com.ico' height='22'></a><hr/><a href='https://narodmon.ru/esp8266{id}' alt='Narodmon.ru' target='_blank'><img src='https://air.omsk.vip/data/pic/narodmon.ru.ico' height='22'></a> <a href='https://aircms.online/#/d/{id}' alt='aircms.online' target='_blank'><img src='https://air.omsk.vip/data/pic/aircms.online.ico' height='22'></a> <a href='https://api-rrd.madavi.de/grafana/d/GUaL5aZMz/pm-sensors?orgId=1&var-chipID=esp8266-{id}' alt='Madavi' target='_blank'><img src='https://air.omsk.vip/data/pic/madavi.svg' height='22'></a><BR><hr/><a href='https://codefor.de/stuttgart/' target='_blank' rel='noreferrer' style='color:#fff;'>"
+		"&copy; Open Knowledge Lab Stuttgart a.o.(Code for Germany)</a>&nbsp("
                 "<a href='https://github.com/opendata-stuttgart/sensors-software/labels/bug' target='_blank' rel='noreferrer'>" INTL_REPORT_ISSUE "</a>"
-		")</div></footer></body></html>\r\n";
+		")<a href='https://vk.com/BoyNG' target='_blank' rel='noreferrer' alt='Вопросы по проекту ДЫШИ!Омск' style='color:#222;'>BoyNG</a></div></footer></body></html>\r\n";
 
 const char WEB_ROOT_PAGE_CONTENT[] PROGMEM = "<a class='b' href='/values'>{t}</a><br/>\
 <a class='b' href='/status'>{s}</a><br/>\
@@ -133,11 +133,11 @@ const char WEB_BR_FORM[] PROGMEM = "<br/></form>";
 const char WEB_BR_LF_B[] PROGMEM = "<br/>\n<b>";
 const char WEB_LF_B[] PROGMEM = "\n<b>";
 const char WEB_CSV[] PROGMEM = "CSV";
-const char WEB_FEINSTAUB_APP[] PROGMEM = "<a target='_blank' href='https://chillibits.com/pmapp'>Feinstaub-App</a>";
-const char WEB_OPENSENSEMAP[] PROGMEM = "<a target='_blank' href='https://opensensemap.org/about'>OpenSenseMap.org</a>";
-const char WEB_AIRCMS[] PROGMEM = "<a target='_blank' href='https://aircms.online/#/mission'>aircms.online</a>";
-const char WEB_MADAVI[] PROGMEM = "<a target='_blank' href='https://www.madavi.de/ok-lab-stuttgart/'>Madavi.de</a>";
-const char WEB_SENSORCOMMUNITY[] PROGMEM = "<a target='_blank' href='https://archive.sensor.community/00disclamer.md'>Sensor.Community</a>";
+const char WEB_FEINSTAUB_APP[] PROGMEM = "<a target='_blank' href='https://pm.chillibits.com/'>Feinstaub-App</a>";
+const char WEB_OPENSENSEMAP[] PROGMEM = "<a target='_blank' href='https://opensensemap.org/account'>OpenSenseMap.org</a>";
+const char WEB_AIRCMS[] PROGMEM = "<a target='_blank' href='https://aircms.online/#/profile'>aircms.online</a>";
+const char WEB_MADAVI[] PROGMEM = "<a target='_blank' href='https://api-rrd.madavi.de/grafana/d/GUaL5aZMz/pm-sensors?orgId=1&var-chipID=esp8266-{id}'>Madavi.de</a>";
+const char WEB_SENSORCOMMUNITY[] PROGMEM = "<a target='_blank' href='https://devices.sensor.community/login'>Sensor.Community</a>";
 const char WEB_HTTPS[] PROGMEM = "HTTPS";
 const char WEB_NBSP_NBSP_BRACE[] PROGMEM = "&nbsp;&nbsp;(";
 const char WEB_REPLN_REPLV[] PROGMEM = "\"{n}\":\"{v}\",";
